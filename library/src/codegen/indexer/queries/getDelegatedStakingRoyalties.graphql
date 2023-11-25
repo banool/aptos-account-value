@@ -1,0 +1,16 @@
+query getDelegatedStakingRoyalties($address: String!, $pool: String) {
+  delegated_staking_activities(
+    where: {
+      delegator_address: { _eq: $address }
+      pool_address: { _eq: $pool }
+    }
+    order_by: { transaction_version: desc }
+  ) {
+    amount
+    delegator_address
+    event_index
+    event_type
+    pool_address
+    transaction_version
+  }
+}

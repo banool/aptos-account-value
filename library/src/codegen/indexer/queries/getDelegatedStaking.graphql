@@ -1,0 +1,15 @@
+query getDelegatedStaking($address: String!) {
+  delegator_distinct_pool(where: { delegator_address: { _eq: $address } }) {
+    delegator_address
+    pool_address
+    current_pool_balance {
+      operator_commission_percentage
+    }
+    staking_pool_metadata {
+      operator_address
+      operator_aptos_name {
+        domain
+      }
+    }
+  }
+}
