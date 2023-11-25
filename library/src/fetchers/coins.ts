@@ -18,8 +18,9 @@ export async function fetchCoins({
   const assets: Asset[] = [];
   for (const coin of out) {
     assets.push({
-      unit: coin.asset_type,
+      address: coin.asset_type,
       amount: coin.amount,
+      decimals: coin.metadata?.decimals,
       prettyName: coin.metadata?.name,
     });
   }

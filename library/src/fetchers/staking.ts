@@ -2,7 +2,7 @@ import { Aptos, AccountAddress, InputViewRequestData, HexInput } from "@aptos-la
 import { GetDelegatedStakingQuery, GetDelegatedStakingRoyaltiesQuery } from "../codegen/indexer/generated/operations";
 import { GetDelegatedStaking, GetDelegatedStakingRoyalties } from "../codegen/indexer/generated/queries";
 import { ensureMillisecondTimestamp, sequentialMap, sum } from "../core/helpers";
-import { ASSET_APTOS_COIN, Asset } from "../core/types";
+import { APT_DECIMALS, ASSET_APTOS_COIN, Asset } from "../core/types";
 
 /**
  * Get the total amount of APT owned by the account in delegated staking pools.
@@ -21,8 +21,9 @@ export async function fetchStake({
   const allStake = await getAllStake(client, address);
   return [
     {
-      unit: ASSET_APTOS_COIN.address,
+      address: ASSET_APTOS_COIN.address,
       amount: allStake.total,
+      decimals: APT_DECIMALS,
       prettyName: ASSET_APTOS_COIN.prettyName,
     },
   ];

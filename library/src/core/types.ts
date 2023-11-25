@@ -1,13 +1,17 @@
 export type Asset = {
-  unit: string;
-  amount: number;
+  address: string;
+  decimals?: number;
   prettyName?: string;
+  amount: number;
 };
+
+export const APT_DECIMALS = 8;
 
 // In some functions we don't read the coin metadata. These constants are for common
 // assets, so the keys match.
 export const ASSET_APTOS_COIN = {
   address: "0x1::aptos_coin::AptosCoin",
+  decimals: APT_DECIMALS,
   prettyName: "Aptos Coin",
 };
 

@@ -1,5 +1,8 @@
 import { OutputCurrency, outputCurrencyToGeckoId } from "../core";
-import { addressToGeckoId, geckoIdToAddress } from "./lookup";
+import { addressToGeckoId, geckoIdToAddresses } from "./lookup";
+
+// TODO: There should be multiple ways to look up the price for an asset, and a top
+// level lookup to guide that.
 
 const url = "https://api.coingecko.com/api/v3/simple/price";
 
@@ -15,25 +18,30 @@ export async function getPrices({
   outputCurrency: OutputCurrency;
 }): Promise<Record<string, number>> {
   const outputCurrencyGeckoId = outputCurrencyToGeckoId(outputCurrency);
-  const ids = addresses.map((address) => addressToGeckoId[address]).join(",");
+  // Filter out addresses that we don't have entries for in the lookup.
+  const ids = addresses
+    .map((address) => addressToGeckoId[address])
+    .filter((address) => address !== undefined)
+    .join(",");
+
   const params = {
     ids,
     vs_currencies: outputCurrencyGeckoId,
   };
   const urlParams = new URLSearchParams(params).toString();
 
-  // Use `fetch` to perform the GET request.
   const response = await fetch(`${url}?${urlParams}`);
 
-  // Convert the response to JSON.
   const data = await response.json();
 
   const prices: Record<string, number> = {};
 
   Object.entries(data).forEach(([geckoId, mapValue]) => {
-    const address = geckoIdToAddress[geckoId];
+    const addrs = geckoIdToAddresses[geckoId];
     const price = (mapValue as any)[outputCurrencyGeckoId as keyof typeof mapValue];
-    prices[address] = price;
+    for (const address of addrs) {
+      prices[address] = price;
+    }
   });
 
   return prices;

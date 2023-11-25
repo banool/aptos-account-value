@@ -5,7 +5,7 @@ import { fetchCoins, fetchStake } from "../../src/fetchers";
 describe("Fetchers", () => {
   const config = new AptosConfig({ network: Network.MAINNET });
   const client = new Aptos(config);
-  const accountAddress = "0xe9c4ac5a59bdee5b23715e5d1ab0486c199eddc7572148843a6ca816320b8f22";
+  const accountAddress = "0x2f4624c9e2eb646a53d3a82666317a88c66df2119607a0ba6b56675225d97ced";
 
   test("Coin fetcher works", async () => {
     const coins = await fetchCoins({ client, accountAddress });
