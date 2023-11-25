@@ -1,9 +1,10 @@
-import { Aptos, HexInput } from "@aptos-labs/ts-sdk";
+import { AccountAddressInput, Aptos } from "@aptos-labs/ts-sdk";
 import { Asset, OutputCurrency } from "./core";
 import { fetchCoins, fetchStake } from "./fetchers";
 import { AppraiseResult, appraise } from "./appraiser";
 
-export { appraise } from "./appraiser";
+export { AppraiseResult } from "./appraiser";
+export { Asset, OutputCurrency } from "./core";
 
 export async function getAccountValue({
   client,
@@ -11,7 +12,7 @@ export async function getAccountValue({
   outputCurrency = OutputCurrency.USD,
 }: {
   client: Aptos;
-  accountAddress: HexInput;
+  accountAddress: AccountAddressInput;
   outputCurrency?: OutputCurrency;
 }): Promise<AppraiseResult> {
   // Fetch assets on the account.

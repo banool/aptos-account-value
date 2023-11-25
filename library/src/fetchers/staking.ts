@@ -1,4 +1,4 @@
-import { Aptos, AccountAddress, InputViewRequestData, HexInput } from "@aptos-labs/ts-sdk";
+import { Aptos, AccountAddress, InputViewRequestData, AccountAddressInput } from "@aptos-labs/ts-sdk";
 import { GetDelegatedStakingQuery, GetDelegatedStakingRoyaltiesQuery } from "../codegen/indexer/generated/operations";
 import { GetDelegatedStaking, GetDelegatedStakingRoyalties } from "../codegen/indexer/generated/queries";
 import { ensureMillisecondTimestamp, sequentialMap, sum } from "../core/helpers";
@@ -15,7 +15,7 @@ export async function fetchStake({
   accountAddress,
 }: {
   client: Aptos;
-  accountAddress: HexInput;
+  accountAddress: AccountAddressInput;
 }): Promise<Asset[]> {
   const address = AccountAddress.from(accountAddress);
   const allStake = await getAllStake(client, address);

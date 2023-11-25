@@ -1,4 +1,4 @@
-import { Aptos, AccountAddress, HexInput } from "@aptos-labs/ts-sdk";
+import { Aptos, AccountAddress, AccountAddressInput } from "@aptos-labs/ts-sdk";
 import { Asset } from "../core/types";
 
 /**
@@ -11,7 +11,7 @@ export async function fetchCoins({
   accountAddress,
 }: {
   client: Aptos;
-  accountAddress: HexInput;
+  accountAddress: AccountAddressInput;
 }): Promise<Asset[]> {
   const address = AccountAddress.from(accountAddress);
   const out = await client.getAccountCoinsData({ accountAddress: address });
