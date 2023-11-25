@@ -21,7 +21,7 @@ export async function fetchStake({
   const allStake = await getAllStake(client, address);
   return [
     {
-      unit: ASSET_APTOS_COIN.unit,
+      unit: ASSET_APTOS_COIN.address,
       amount: allStake.total,
       prettyName: ASSET_APTOS_COIN.prettyName,
     },

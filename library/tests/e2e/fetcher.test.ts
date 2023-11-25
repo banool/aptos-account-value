@@ -1,6 +1,5 @@
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
-import { fetchCoins } from "../../src";
-import { fetchStake } from "../../src/fetchers/staking";
+import { fetchCoins, fetchStake } from "../../src/fetchers";
 
 /* eslint no-console: 0 */
 describe("Fetchers", () => {
