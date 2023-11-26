@@ -18,8 +18,8 @@ dependencies:
     specifier: ^2.0.0
     version: 2.0.0(@aptos-labs/ts-sdk@0.0.7)(aptos@1.20.0)(react@18.2.0)
   '@banool/aptos-account-value':
-    specifier: ^0.0.2
-    version: 0.0.2(graphql@16.8.1)
+    specifier: ^0.0.7
+    version: 0.0.7(graphql@16.8.1)
   '@chakra-ui/icons':
     specifier: ^2.1.1
     version: 2.1.1(@chakra-ui/system@2.6.2)(react@18.2.0)
@@ -1753,8 +1753,8 @@ packages:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  /@banool/aptos-account-value@0.0.2(graphql@16.8.1):
-    resolution: {integrity: sha512-GNzVyD0r3Q+B83uq+G/Ybpu9Vbz7KzBLd5M4wLkUoa/GwYWqPOPAJ9kcBiGLsDv33fuhJj/snM7lULoT0n6zvg==}
+  /@banool/aptos-account-value@0.0.7(graphql@16.8.1):
+    resolution: {integrity: sha512-XZ/KjUWDvJ6IGo0otit2gt5n27y2/OV4sJf+hsfzHpG9nxP1iusV4Zz4zpRK/tnFeBlaIlUoTsSr4bBzl0ZOSg==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@aptos-labs/ts-sdk': 0.0.7

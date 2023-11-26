@@ -1,9 +1,9 @@
-import { useQueries, UseQueryResult } from "@tanstack/react-query";
-import { AccountAddressInput, Aptos } from "@aptos-labs/ts-sdk";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { AccountAddressInput, AccountAddress, Aptos } from "@aptos-labs/ts-sdk";
 import {
   AppraiseResult,
   OutputCurrency,
-  getAccountValue,
+  getAccountValueMany,
 } from "@banool/aptos-account-value";
 
 export function useGetAccountValueMany({
@@ -14,19 +14,23 @@ export function useGetAccountValueMany({
   client: Aptos;
   accountAddresses: AccountAddressInput[];
   outputCurrency?: OutputCurrency;
-}): UseQueryResult<AppraiseResult>[] {
-  return useQueries({
-    queries: accountAddresses.map((address) => ({
-      queryKey: ["getAccountValue", address, outputCurrency],
-      queryFn: () =>
-        getAccountValue({
-          client: client,
-          accountAddress: address,
-          outputCurrency,
-        }),
-      enabled: accountAddresses.length > 0,
-      retry: 2,
-    })),
+}): UseQueryResult<Map<string, AppraiseResult>> {
+  const validAccountAddresses = accountAddresses.filter(
+    (address) => AccountAddress.isValid({ input: address }).valid,
+  );
+
+  console.log("useGetAccountValueMany", validAccountAddresses);
+
+  return useQuery({
+    queryKey: ["getAccountValue", validAccountAddresses, outputCurrency],
+    queryFn: () =>
+      getAccountValueMany({
+        client: client,
+        accountAddresses: validAccountAddresses,
+        outputCurrency,
+      }),
+    enabled: validAccountAddresses.length > 0,
+    retry: 2,
   });
 }
 

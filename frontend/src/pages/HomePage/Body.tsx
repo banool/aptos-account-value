@@ -31,6 +31,7 @@ import { RowInfo, formatAmount } from "./RowInfo";
 import { OutputCurrency } from "@banool/aptos-account-value";
 import { useGetAccountValueMany } from "../../api/hooks/useGetAccountValueMany";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
+import { sum } from "../../utils";
 
 export const Body = () => {
   const [globalState] = useGlobalState();
@@ -38,7 +39,7 @@ export const Body = () => {
   const [addresses, updateAddresses] = useState<string[]>([]);
   const [outputCurrency, setOutputCurrency] = useState(OutputCurrency.USD);
 
-  const queries = useGetAccountValueMany({
+  const accountValues = useGetAccountValueMany({
     client: globalState.client,
     accountAddresses: addresses,
     outputCurrency,
@@ -104,6 +105,10 @@ export const Body = () => {
     );
   };
 
+  if (accountValues.data !== undefined) {
+    console.log("blah", JSON.stringify(Array.from(accountValues.data.entries())));
+  }
+
   // Create rows for each address.
   let rows = [];
   for (const [index, address] of addresses.entries()) {
@@ -127,19 +132,18 @@ export const Body = () => {
       );
       continue;
     }
-    const query = queries[index];
-    if (query.error) {
+    if (accountValues.error) {
       rows.push(
         getRowFrame(
           address,
           index,
           <RowInfo
-            input={{ kind: "error", error: query.error }}
+            input={{ kind: "error", error: accountValues.error }}
             outputCurrency={outputCurrency}
           />,
         ),
       );
-    } else if (query.isLoading || query.data === undefined) {
+    } else if (accountValues.isLoading || accountValues.data === undefined) {
       rows.push(
         getRowFrame(
           address,
@@ -151,7 +155,10 @@ export const Body = () => {
         ),
       );
     } else {
-      const appraiseResult = queries[index].data!;
+      // At this point we know the address is valid so the result must be present.
+      // The library returns the keys as AIP-40 compliant strings so we convert just
+      // in case.
+      const appraiseResult = accountValues.data.get(AccountAddress.from(address).toString())!;
       rows.push(
         getRowFrame(
           address,
@@ -185,12 +192,17 @@ export const Body = () => {
     </Button>
   );
 
-  const grandTotal = queries.reduce((acc, query) => {
-    if (query.error || query.isLoading || query.data === undefined) {
-      return acc;
-    }
-    return acc + query.data!.totalValue;
-  }, 0);
+  let grandTotal;
+  if (accountValues.data === undefined) {
+    grandTotal = 0;
+  } else {
+    grandTotal = sum(
+      Array.from(accountValues.data.values()).map(
+        (result) => result.totalValue,
+      ),
+      (a) => a,
+    );
+  }
 
   const summaryRow = (
     <Tr key={"summaryRow"}>
@@ -215,7 +227,7 @@ export const Body = () => {
           onChange={(e) => setOutputCurrency(e.target.value as OutputCurrency)}
         >
           <option value={OutputCurrency.USD}>USD</option>
-          <option value={OutputCurrency.APT}>APT</option>
+          {/*<option value={OutputCurrency.APT}>APT</option>*/}
         </Select>
         <Box w="1%" />
         {clearButton}
@@ -271,61 +283,4 @@ export const Body = () => {
       </TableContainer>
     </Box>
   );
-  /*
-      <Box w="100%">
-        <Center>
-          <Flex>
-            {vestCard}
-            {unlockRewardsCard}
-            {distributeCard}
-          </Flex>
-        </Center>
-      </Box>
-      */
 };
-
-/*
-type ButtonCardProps = {
-  header: string;
-  explanation: string;
-  canCallStatus: CanCallStatus;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-};
-
-const getButtonCard = ({
-  header,
-  explanation,
-  canCallStatus,
-  onClick,
-}: ButtonCardProps) => {
-  let headerText;
-  switch (canCallStatus) {
-    case "canCall":
-      headerText = "✅";
-      break;
-    case "cannotCall":
-      headerText = "❌";
-      break;
-    case "loading":
-      headerText = "⏳";
-      break;
-  }
-  return (
-    <Card margin={3} minW="350px" maxW="350px">
-      <CardHeader>
-        <Flex>
-          <Heading size="md">{header}</Heading>
-          <Spacer />
-          <Text>{headerText}</Text>
-        </Flex>
-      </CardHeader>
-      <CardBody>{explanation}</CardBody>
-      <CardFooter>
-        <Button onClick={onClick} disabled={canCallStatus !== "canCall"}>
-          Submit
-        </Button>
-      </CardFooter>
-    </Card>
-  );
-};
-*/

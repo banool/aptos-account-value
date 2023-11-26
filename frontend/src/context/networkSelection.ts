@@ -74,9 +74,9 @@ export function useNetworkSelector() {
     [], // empty [] makes this effect only run once (on mount)
   );
 
-  if (isValidNetworkString(selectedNetworkQueryParam)) {
-    // TODO: Create Network from selectedNetworkQueryParam instead.
-    return [Network.LOCAL, selectNetwork] as const;
+  const selectedNetwork = getNetwork(selectedNetworkQueryParam);
+  if (selectedNetwork !== undefined) {
+    return [selectedNetwork, selectNetwork] as const;
   } else {
     return [defaultNetwork, selectNetwork] as const;
   }

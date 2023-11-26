@@ -9,8 +9,10 @@ import {
   PopoverBody,
   Button,
   Box,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { AppraiseResult, OutputCurrency } from "@banool/aptos-account-value";
+import { AppraisalModal } from "./AssetInformation";
 
 export type RowInfoInputEmpty = {
   kind: "empty";
@@ -78,7 +80,7 @@ export const RowInfo = ({
       <Td>{result.knownAssets.length}</Td>
       <Td>{result.unknownAssets.length}</Td>
       <Td>
-        <Button>🧐</Button>
+        <AppraisalButton result={result} />
       </Td>
     </>
   );
@@ -114,6 +116,21 @@ const InvalidPopover = ({ reason }: { reason: string }) => {
         <PopoverBody>{reason}</PopoverBody>
       </PopoverContent>
     </Popover>
+  );
+};
+
+const AppraisalButton = ({result}: {result: AppraiseResult}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <>
+      <Button onClick={onOpen}>🧐</Button>
+      <AppraisalModal
+        isOpen={isOpen}
+        onClose={onClose}
+        result={result}
+      />
+    </>
   );
 };
 

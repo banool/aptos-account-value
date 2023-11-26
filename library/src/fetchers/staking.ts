@@ -19,12 +19,15 @@ export async function fetchStake({
 }): Promise<Asset[]> {
   const address = AccountAddress.from(accountAddress);
   const allStake = await getAllStake(client, address);
+  if (allStake.total === 0) {
+    return [];
+  }
   return [
     {
       typeString: ASSET_APTOS_COIN.address,
       amount: allStake.total,
       decimals: APT_DECIMALS,
-      prettyName: ASSET_APTOS_COIN.prettyName,
+      prettyName: `${ASSET_APTOS_COIN.prettyName} (Staked)`,
     },
   ];
 }

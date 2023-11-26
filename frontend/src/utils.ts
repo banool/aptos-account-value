@@ -176,3 +176,7 @@ export function validateAptString(s: string): number | null {
   } catch (_) {}
   return null;
 }
+
+export function sum<T>(arr: T[], fn: (item: T) => number): number {
+  return arr.reduce((acc, item) => acc + fn(item), 0);
+}
