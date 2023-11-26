@@ -119,17 +119,13 @@ const InvalidPopover = ({ reason }: { reason: string }) => {
   );
 };
 
-const AppraisalButton = ({result}: {result: AppraiseResult}) => {
+const AppraisalButton = ({ result }: { result: AppraiseResult }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Button onClick={onOpen}>🧐</Button>
-      <AppraisalModal
-        isOpen={isOpen}
-        onClose={onClose}
-        result={result}
-      />
+      <AppraisalModal isOpen={isOpen} onClose={onClose} result={result} />
     </>
   );
 };

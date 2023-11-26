@@ -106,7 +106,10 @@ export const Body = () => {
   };
 
   if (accountValues.data !== undefined) {
-    console.log("blah", JSON.stringify(Array.from(accountValues.data.entries())));
+    console.log(
+      "blah",
+      JSON.stringify(Array.from(accountValues.data.entries())),
+    );
   }
 
   // Create rows for each address.
@@ -158,7 +161,9 @@ export const Body = () => {
       // At this point we know the address is valid so the result must be present.
       // The library returns the keys as AIP-40 compliant strings so we convert just
       // in case.
-      const appraiseResult = accountValues.data.get(AccountAddress.from(address).toString())!;
+      const appraiseResult = accountValues.data.get(
+        AccountAddress.from(address).toString(),
+      )!;
       rows.push(
         getRowFrame(
           address,
