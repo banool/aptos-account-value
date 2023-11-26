@@ -22,13 +22,15 @@ import {
   Spacer,
   useToast,
   Select,
+  Divider,
 } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useGlobalState } from "../../context/GlobalState";
-import { RowInfo } from "./RowInfo";
+import { RowInfo, formatAmount } from "./RowInfo";
 import { OutputCurrency } from "@banool/aptos-account-value";
-import { useGetAccountValueMany } from "../../api/hooks/useGetAccountValue";
+import { useGetAccountValueMany } from "../../api/hooks/useGetAccountValueMany";
+import { AccountAddress } from "@aptos-labs/ts-sdk";
 
 export const Body = () => {
   const [globalState] = useGlobalState();
@@ -108,12 +110,69 @@ export const Body = () => {
     if (address === "") {
       continue;
     }
-    const appraiseResult = queries[index]?.data;
-    rows.push(getRowFrame(address, index, <RowInfo result={appraiseResult}  outputCurrency={outputCurrency}/>));
+    const validityResult = AccountAddress.isValid({ input: address });
+    if (!validityResult.valid) {
+      rows.push(
+        getRowFrame(
+          address,
+          index,
+          <RowInfo
+            input={{
+              kind: "invalid",
+              reason: validityResult.invalidReasonMessage!,
+            }}
+            outputCurrency={outputCurrency}
+          />,
+        ),
+      );
+      continue;
+    }
+    const query = queries[index];
+    if (query.error) {
+      rows.push(
+        getRowFrame(
+          address,
+          index,
+          <RowInfo
+            input={{ kind: "error", error: query.error }}
+            outputCurrency={outputCurrency}
+          />,
+        ),
+      );
+    } else if (query.isLoading || query.data === undefined) {
+      rows.push(
+        getRowFrame(
+          address,
+          index,
+          <RowInfo
+            input={{ kind: "loading" }}
+            outputCurrency={outputCurrency}
+          />,
+        ),
+      );
+    } else {
+      const appraiseResult = queries[index].data!;
+      rows.push(
+        getRowFrame(
+          address,
+          index,
+          <RowInfo
+            input={{ kind: "present", result: appraiseResult }}
+            outputCurrency={outputCurrency}
+          />,
+        ),
+      );
+    }
   }
 
   // Create an additional row for further input.
-  rows.push(getRowFrame("", addresses.length, <RowInfo result={undefined} outputCurrency={outputCurrency} />));
+  rows.push(
+    getRowFrame(
+      "",
+      addresses.length,
+      <RowInfo input={{ kind: "empty" }} outputCurrency={outputCurrency} />,
+    ),
+  );
 
   const clearButton = (
     <Button
@@ -126,28 +185,24 @@ export const Body = () => {
     </Button>
   );
 
-  /*
-  const vestCard = getButtonCard({
-    header: "Vest",
-    onClick: handleVestTransaction,
-    canCallStatus: canVest.canCallStatus,
-    explanation: canVest.reason,
-  });
+  const grandTotal = queries.reduce((acc, query) => {
+    if (query.error || query.isLoading || query.data === undefined) {
+      return acc;
+    }
+    return acc + query.data!.totalValue;
+  }, 0);
 
-  const unlockRewardsCard = getButtonCard({
-    header: "Unlock Rewards",
-    onClick: handleUnlockRewardsTransaction,
-    canCallStatus: canUnlockRewards.canCallStatus,
-    explanation: canUnlockRewards.reason,
-  });
+  const summaryRow = (
+    <Tr key={"summaryRow"}>
+      <Td>Grand Total</Td>
+      <Td>{formatAmount(grandTotal, outputCurrency)}</Td>
+      <Td></Td>
+      <Td></Td>
+      <Td></Td>
+    </Tr>
+  );
 
-  const distributeCard = getButtonCard({
-    header: "Distribute",
-    onClick: handleDistributeTransaction,
-    canCallStatus: canDistribute.canCallStatus,
-    explanation: canDistribute.reason,
-  });
-  */
+  rows.push(summaryRow);
 
   return (
     <Box>
@@ -167,7 +222,15 @@ export const Body = () => {
         <Spacer />
       </Flex>
       <TableContainer p={4} w="100%">
-        <Table variant="simple">
+        <Table
+          variant="simple"
+          // This makes the border for the last row thicker.
+          sx={{
+            "& tr:nth-last-of-type(2) td": {
+              borderBottomWidth: "3px",
+            },
+          }}
+        >
           <Thead>
             <Tr>
               <Th>Addresses</Th>
@@ -198,9 +261,7 @@ export const Body = () => {
                   ⓘ
                 </Tooltip>
               </Th>
-              <Th>
-                Details
-              </Th>
+              <Th>Details</Th>
             </Tr>
           </Thead>
           <Tbody>

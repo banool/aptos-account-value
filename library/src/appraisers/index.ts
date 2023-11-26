@@ -1,5 +1,6 @@
-import { Asset, OutputCurrency } from "../core/types";
-import { getPrices } from "./api";
+import { Asset } from "../core/types";
+
+export { getPrices } from "./gecko/api";
 
 export type AppraiseResult = {
   /** The total value of the assets in the account, excluding those listed in unknownAssetAddresses. */
@@ -15,26 +16,14 @@ export type AppraiseResult = {
  * This function takes in a list of Assets and returns their value in the requested
  * currency.
  */
-export async function appraise({
-  assets,
-  outputCurrency = OutputCurrency.USD,
-}: {
-  assets: Asset[];
-  outputCurrency?: OutputCurrency;
-}): Promise<AppraiseResult> {
-  // Get all the addresses of the assets, deduplicating.
-  const addresses = [...new Set(assets.map((asset) => asset.address))];
-
-  // Lookup the prices of the assets.
-  const prices = await getPrices({ addresses, outputCurrency });
-
+export function appraise({ assets, prices }: { assets: Asset[]; prices: Map<string, number> }): AppraiseResult {
   const knownAssets: Asset[] = [];
   const unknownAssets: Asset[] = [];
 
   // Sum up the value of the assets.
   let totalValue = 0;
   for (const asset of assets) {
-    const price = prices[asset.address];
+    const price = prices.get(asset.typeString);
     if (price === undefined) {
       unknownAssets.push(asset);
     } else {

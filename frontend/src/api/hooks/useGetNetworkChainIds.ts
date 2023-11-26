@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { getLedgerInfoWithoutResponseError } from "..";
 import {
   getLocalStorageWithExpiry,
@@ -11,9 +11,9 @@ const TTL = 3600000; // 1 hour
 export function useGetChainId(network: Network): string | null {
   let chainIdFromCache = getLocalStorageWithExpiry(`${network}ChainId`);
 
-  const { data } = useQuery(
-    ["ledgerInfo", network],
-    () => {
+  const { data } = useQuery({
+    queryKey: ["ledgerInfo", network],
+    queryFn: () => {
       try {
         return getLedgerInfoWithoutResponseError(network);
       } catch (e) {
@@ -21,8 +21,8 @@ export function useGetChainId(network: Network): string | null {
         return null;
       }
     },
-    { enabled: chainIdFromCache === null },
-  );
+    enabled: chainIdFromCache === null,
+  });
 
   if (chainIdFromCache !== null) {
     return chainIdFromCache;

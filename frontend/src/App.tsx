@@ -1,5 +1,5 @@
 import { Box, ChakraProvider, theme } from "@chakra-ui/react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter } from "react-router-dom";
 import { GlobalStateProvider, useGlobalState } from "./context/GlobalState";
 import MyRoutes from "./MyRoutes";

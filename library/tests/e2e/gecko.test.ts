@@ -1,4 +1,4 @@
-import { getPrices } from "../../src/appraiser/api";
+import { getPrices } from "../../src/appraisers/gecko/api";
 import { OutputCurrency } from "../../src/core";
 
 /* eslint no-console: 0 */

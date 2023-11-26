@@ -1,4 +1,4 @@
-import { OutputCurrency, outputCurrencyToGeckoId } from "../core";
+import { OutputCurrency, outputCurrencyToGeckoId } from "../../core";
 import { addressToGeckoId, geckoIdToAddresses } from "./lookup";
 
 // TODO: There should be multiple ways to look up the price for an asset, and a top
@@ -16,7 +16,7 @@ export async function getPrices({
 }: {
   addresses: string[];
   outputCurrency: OutputCurrency;
-}): Promise<Record<string, number>> {
+}): Promise<Map<string, number>> {
   const outputCurrencyGeckoId = outputCurrencyToGeckoId(outputCurrency);
   // Filter out addresses that we don't have entries for in the lookup.
   const ids = addresses
@@ -34,13 +34,13 @@ export async function getPrices({
 
   const data = await response.json();
 
-  const prices: Record<string, number> = {};
+  const prices: Map<string, number> = new Map();
 
   Object.entries(data).forEach(([geckoId, mapValue]) => {
     const addrs = geckoIdToAddresses[geckoId];
     const price = (mapValue as any)[outputCurrencyGeckoId as keyof typeof mapValue];
     for (const address of addrs) {
-      prices[address] = price;
+      prices.set(address, price);
     }
   });
 

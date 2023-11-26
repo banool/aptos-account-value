@@ -1,4 +1,4 @@
-import { useQueries, UseQueryResult } from "react-query";
+import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import { AccountAddressInput, Aptos } from "@aptos-labs/ts-sdk";
 import {
   AppraiseResult,
@@ -15,8 +15,8 @@ export function useGetAccountValueMany({
   accountAddresses: AccountAddressInput[];
   outputCurrency?: OutputCurrency;
 }): UseQueryResult<AppraiseResult>[] {
-  return useQueries(
-    accountAddresses.map((address) => ({
+  return useQueries({
+    queries: accountAddresses.map((address) => ({
       queryKey: ["getAccountValue", address, outputCurrency],
       queryFn: () =>
         getAccountValue({
@@ -25,6 +25,10 @@ export function useGetAccountValueMany({
           outputCurrency,
         }),
       enabled: accountAddresses.length > 0,
+      retry: 2,
     })),
-  );
+  });
 }
+
+// TODO: I need to fix the error return here, the UI shows nothing.
+// TODO: Batch calls to CoinGecko, expose a single getAccountValueMany function in the library.

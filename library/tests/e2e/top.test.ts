@@ -1,5 +1,5 @@
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
-import { getAccountValue } from "../../src";
+import { getAccountValueMany } from "../../src";
 
 /* eslint no-console: 0 */
 describe("Top", () => {
@@ -8,7 +8,7 @@ describe("Top", () => {
   const accountAddress = "0x2f4624c9e2eb646a53d3a82666317a88c66df2119607a0ba6b56675225d97ced";
 
   test("getAccountValue works", async () => {
-    const result = await getAccountValue({ client, accountAddress });
+    const result = await getAccountValueMany({ client, accountAddresses: [accountAddress] });
     console.log(JSON.stringify(result, null, 2));
   });
 });
