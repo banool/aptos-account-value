@@ -1,12 +1,19 @@
 import React from "react";
-import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../components/ColorModeSwitcher";
 import NetworkSelect from "../components/NetworkSelect";
 import { Link } from "react-router-dom";
 import "../css/wallet_selector.css";
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { useGetAptToUsd } from "../api/hooks/useGetAptToUsd";
 
 export const ConnectWalletComponent = () => {
   // Wallet icon component.
@@ -20,10 +27,30 @@ interface LayoutProps {
 // TODO: Figure out how to make IconButton padding for GitHub button the same
 // as the color switcher button.
 export default function MainLayout({ children }: LayoutProps) {
-  const { isLoading } = useWallet();
+  const { isLoading, aptToUsd, error } = useGetAptToUsd();
 
-  var headerMiddle = null;
+  let headerMiddle = null;
+  if (isLoading) {
+    headerMiddle = <Text textAlign={"center"}>Loading APT price...</Text>;
+  }
+  if (aptToUsd) {
+    headerMiddle = (
+      <Tooltip label="Refreshes every 15 seconds">
+        <Text textAlign={"center"}>{`1 APT = ${aptToUsd.toFixed(2)} USD`}</Text>
+      </Tooltip>
+    );
+  }
+  if (!isLoading && aptToUsd === undefined) {
+    headerMiddle = (
+      <Text textAlign={"center"}>
+        Error loading APT price, see console logs
+      </Text>
+    );
+    console.log("Error loading APT price:");
+    console.log(error);
+  }
 
+  /*
   function getRandomFaceEmoji(): string {
     const emojis = [
       "😀",
@@ -48,8 +75,7 @@ export default function MainLayout({ children }: LayoutProps) {
       {getRandomFaceEmoji().repeat(3)}
     </Text>
   );
-
-  let walletConnectComponent = /*<WalletSelector />;*/ null;
+  */
 
   // Courtesy of https://stackoverflow.com/q/75175422/3846032.
   const body = (
@@ -67,7 +93,7 @@ export default function MainLayout({ children }: LayoutProps) {
             {headerMiddle}
           </Flex>
           <Flex justifyContent="flex-end" alignItems="center" gap="2" flex="1">
-            <a href="https://github.com/banool/aptos-canvas">
+            <a href="https://github.com/banool/aptos-account-value">
               <IconButton
                 size="xs"
                 fontSize="sm"
@@ -91,7 +117,6 @@ export default function MainLayout({ children }: LayoutProps) {
             </a>
             <NetworkSelect />
             <ColorModeSwitcher />
-            {walletConnectComponent}
           </Flex>
         </Flex>
       </Box>
