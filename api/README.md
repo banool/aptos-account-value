@@ -16,7 +16,7 @@ pnpm start
 Query the API:
 ```
 curl \
-  'http://127.0.0.1:3000/accounts/value' \
+  'http://127.0.0.1:3002/accounts/value' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -28,4 +28,4 @@ curl \
 }'
 ```
 
-You can explore the spec here: http://127.0.0.1:3000/spec.
+You can explore the spec here: http://127.0.0.1:3002/spec.
