@@ -8,7 +8,6 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "module": "esnext",
-    "type": "module",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
     "target": "es2020",
