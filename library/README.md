@@ -19,15 +19,24 @@ pnpm install @aptos-labs/ts-sdk@0.0.7
 
 ## Usage
 
-Create a client;
+Create a client:
 
 ```ts
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 const config = new AptosConfig({ network: Network.MAINNET });
-const aptos = new Aptos(config);
+const client = new Aptos(config);
 ```
 
-todo, do the rest
+Use the library:
+```ts
+import { getAccountValueMany, OutputCurrency } from "@banool/aptos-account-value";
+
+await getAccountValueMany({
+  client: client,
+  accountAddresses: ["0x1", "0x2"],
+  outputCurrency: OutputCurrency.USD,
+});
+```
 
 [npm-url]: https://npmjs.org/package/@banool/aptos-account-value

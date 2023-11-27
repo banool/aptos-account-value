@@ -24,8 +24,8 @@ export const ASSET_APTOS_COIN = {
 };
 
 export enum OutputCurrency {
-  APT = "APT",
   USD = "USD",
+  APT = "APT",
 }
 
 export function outputCurrencyToGeckoId(currency: OutputCurrency): string {
