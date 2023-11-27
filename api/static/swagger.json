@@ -54,7 +54,7 @@
 		"securitySchemes": {}
 	},
 	"info": {
-		"title": "aptos-account-value-frontend",
+		"title": "aptos-account-value-api",
 		"version": "0.1.0",
 		"contact": {}
 	},

@@ -1,6 +1,7 @@
 # My stuff
 *.swp
 .vscode
+dist
 
 # dependencies
 /node_modules

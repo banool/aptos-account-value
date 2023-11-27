@@ -29,6 +29,7 @@
   "scripts": {
     "tsoa-generate": "tsoa spec && tsoa routes",
     "start": "ts-node src/server.ts",
+    "compile": "tsc",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "fmt": "prettier --write 'src/**/*.(ts|tsx)'"
   },
