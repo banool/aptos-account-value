@@ -272,7 +272,7 @@ export const Body = () => {
               <Th>
                 Unknown Assets{" "}
                 <Tooltip
-                  label="The number of assets for which we could not determine the value."
+                  label="The number of assets for which we could not determine the value. These are not included in the total value of the account."
                   placement="auto"
                 >
                   ⓘ
