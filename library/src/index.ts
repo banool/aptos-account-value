@@ -16,10 +16,12 @@ export async function getAccountValueMany({
   client,
   accountAddresses,
   outputCurrency = OutputCurrency.USD,
+  minimumBalance = 0.1,
 }: {
   client: Aptos;
   accountAddresses: AccountAddressInput[];
   outputCurrency?: OutputCurrency;
+  minimumBalance?: number;
 }): Promise<Map<string, AppraiseResult>> {
   // Confirm the given addresses are valid.
   accountAddresses.forEach((address) => AccountAddress.from(address));
@@ -33,6 +35,13 @@ export async function getAccountValueMany({
       return [accountAddress, assets] as const;
     }),
   );
+
+  // Filter out assets with less than the minimum balance.
+  const addressToAssetsFiltered = new Map<AccountAddressInput, Asset[]>();
+  for (const [address, assets] of addressToAssets) {
+    const filteredAssets = assets.filter((asset) => asset.amount > minimumBalance);
+    addressToAssetsFiltered.set(address, filteredAssets);
+  }
 
   // Get all the addresses of the assets across all accounts, deduplicating.
   const addresses = new Set<string>();

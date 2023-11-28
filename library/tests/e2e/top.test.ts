@@ -5,10 +5,10 @@ import { getAccountValueMany } from "../../src";
 describe("Top", () => {
   const config = new AptosConfig({ network: Network.MAINNET });
   const client = new Aptos(config);
-  const accountAddress = "0x2f4624c9e2eb646a53d3a82666317a88c66df2119607a0ba6b56675225d97ced";
+  const accountAddress = "0x232098630cfad4734812fa37dc18d9b8d59242feabe49259e26318d468a99584";
 
   test("getAccountValue works", async () => {
     const result = await getAccountValueMany({ client, accountAddresses: [accountAddress] });
-    console.log(JSON.stringify(result, null, 2));
+    console.log("Top level result", JSON.stringify(Object.fromEntries(result.entries()), null, 2));
   });
 });

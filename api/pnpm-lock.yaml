@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.0.7
     version: 0.0.7
   '@banool/aptos-account-value':
-    specifier: ^0.0.7
-    version: 0.0.7(graphql@16.8.1)
+    specifier: ^0.0.8
+    version: 0.0.8(graphql@16.8.1)
   '@tsoa/runtime':
     specifier: ^5.0.0
     version: 5.0.0
@@ -1531,8 +1531,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@banool/aptos-account-value@0.0.7(graphql@16.8.1):
-    resolution: {integrity: sha512-XZ/KjUWDvJ6IGo0otit2gt5n27y2/OV4sJf+hsfzHpG9nxP1iusV4Zz4zpRK/tnFeBlaIlUoTsSr4bBzl0ZOSg==}
+  /@banool/aptos-account-value@0.0.8(graphql@16.8.1):
+    resolution: {integrity: sha512-WN6Hkuy/WPIeomxm4CDwvc+GHhmIvvXBu261BLJVmOaGOymR1G8PJkFLOLS9XpGZDTxWfrppzh08E60/FdDuRQ==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@aptos-labs/ts-sdk': 0.0.7

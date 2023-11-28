@@ -47,6 +47,16 @@ const data: Lookup[] = [
     address: "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::WbtcCoin",
     geckoId: "wrapped-bitcoin",
   },
+  // Amnis Staked Aptos Coin
+  {
+    address: "0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::stapt_token::StakedApt",
+    geckoId: "amnis-staked-aptos-coin",
+  },
+  // Amnis Aptos
+  {
+    address: "0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::amapt_token::AmnisApt",
+    geckoId: "amnis-aptos",
+  },
 ];
 
 // Throw an error if there are any duplicate addresses. Multiple addresses mapping to

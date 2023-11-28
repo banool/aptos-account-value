@@ -11,10 +11,11 @@ describe("Appraiser", () => {
       ],
       outputCurrency: OutputCurrency.USD,
     });
-    console.log(JSON.stringify(prices, null, 2));
+    const pricesObject = Object.fromEntries(prices.entries());
+    console.log("prices", JSON.stringify(pricesObject));
     // Assert that the two addresses are in the output.
-    expect(Object.keys(prices)).toContain("0x1::aptos_coin::AptosCoin");
-    expect(Object.keys(prices)).toContain(
+    expect(pricesObject).toHaveProperty("0x1::aptos_coin::AptosCoin");
+    expect(pricesObject).toHaveProperty(
       "0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC",
     );
   });

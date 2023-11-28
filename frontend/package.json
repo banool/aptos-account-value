@@ -7,7 +7,7 @@
     "@aptos-labs/wallet-adapter-ant-design": "^2.0.0",
     "@aptos-labs/wallet-adapter-core": "^3.0.0",
     "@aptos-labs/wallet-adapter-react": "^2.0.0",
-    "@banool/aptos-account-value": "^0.0.7",
+    "@banool/aptos-account-value": "^0.0.8",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
