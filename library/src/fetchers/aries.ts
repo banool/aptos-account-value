@@ -18,7 +18,14 @@ export async function fetchAriesDeposits({
   const params = {
     owner: accountAddress,
   };
-  const response = await fetch(`${url}?input=${encodeURIComponent(JSON.stringify(params))}`);
+  let response;
+  try {
+    response = await fetch(`${url}?input=${encodeURIComponent(JSON.stringify(params))}`);
+  } catch (e) {
+    // This account must not have an account with Aries.
+    return [];
+  }
+
   const json = await response.json();
   const assets: Asset[] = [];
   for (const profile in json.result.data.profiles) {
