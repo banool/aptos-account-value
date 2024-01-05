@@ -14,7 +14,7 @@ export type AppraiseResult = {
 /**
  *
  * This function takes in a list of Assets and returns their value in the requested
- * currency.
+ * currency. At this point we assume `decimals` is set for all Assets.
  */
 export function appraise({ assets, prices }: { assets: Asset[]; prices: Map<string, number> }): AppraiseResult {
   const knownAssets: Asset[] = [];
@@ -28,7 +28,7 @@ export function appraise({ assets, prices }: { assets: Asset[]; prices: Map<stri
       unknownAssets.push(asset);
     } else {
       knownAssets.push(asset);
-      totalValue += (asset.amount * price) / 10 ** (asset.decimals ?? 0);
+      totalValue += (asset.amount * price) / 10 ** asset.decimals!;
     }
   }
 

@@ -138,7 +138,7 @@ export async function getStakePrincipals({
               break;
             default:
               // eslint-disable-next-line no-console
-              console.log("not found", eventType);
+              console.log("Event type not found", eventType);
               break;
           }
 

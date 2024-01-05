@@ -16,7 +16,7 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   rules: {
     quotes: ["error", "double"],
-    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
+    "no-restricted-syntax": ["error", "LabeledStatement", "WithStatement"],
     "max-len": ["error", 130],
     "import/extensions": ["error", "never"],
     "import/no-commonjs": ["error", { allowRequire: false, allowPrimitiveModules: false }],

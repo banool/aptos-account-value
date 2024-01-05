@@ -1,10 +1,11 @@
 // For now this assumes you're dealing with coins / fungible assets. We will need to
 // refactor if we want to consider other assets, e.g. NFTs.
 export type Asset = {
-  /** For example, 0x1::aptos_coin::AptosCoin */
+  /** For example, 0x1::aptos_coin::AptosCoin. */
   typeString: string;
+  /** If not given, we will look it up. */
   decimals?: number;
-  /** For example, Aptos Coin */
+  /** For example, Aptos Coin. */
   prettyName?: string;
   /**
    * Amount in the on chain unit, e.g. OCTA for APT. We convert for the appraiser

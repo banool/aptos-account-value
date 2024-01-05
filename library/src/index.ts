@@ -1,6 +1,6 @@
 import { AccountAddress, AccountAddressInput, Aptos } from "@aptos-labs/ts-sdk";
-import { Asset, OutputCurrency } from "./core";
-import { fetchCoins, fetchStake } from "./fetchers";
+import { Asset, OutputCurrency, attachDecimalInformation } from "./core";
+import { fetchAriesDeposits, fetchCoins, fetchStake } from "./fetchers";
 import { AppraiseResult, appraise, getPrices } from "./appraisers";
 
 export { AppraiseResult } from "./appraisers";
@@ -32,6 +32,7 @@ export async function getAccountValueMany({
       const assets: Asset[] = [];
       assets.push(...(await fetchCoins({ client, accountAddress })));
       assets.push(...(await fetchStake({ client, accountAddress })));
+      assets.push(...(await fetchAriesDeposits({ accountAddress })));
       return [accountAddress, assets] as const;
     }),
   );
@@ -44,15 +45,18 @@ export async function getAccountValueMany({
   }
 
   // Get all the addresses of the assets across all accounts, deduplicating.
-  const addresses = new Set<string>();
+  const assetTypeStrings = new Set<string>();
   for (const [_, assets] of addressToAssets.values()) {
     for (const asset of assets) {
-      addresses.add(asset.typeString);
+      assetTypeStrings.add(asset.typeString);
     }
   }
 
+  // Attach decimals to the assets if not already there. This operates in place.
+  await attachDecimalInformation({ client, assets: Array.from(addressToAssetsFiltered.values()).flat() });
+
   // Lookup the prices of the assets.
-  const prices = await getPrices({ addresses: Array.from(addresses), outputCurrency });
+  const prices = await getPrices({ addresses: Array.from(assetTypeStrings), outputCurrency });
 
   // Get the value of the assets for each account.
   const out = new Map<string, AppraiseResult>();
