@@ -4,11 +4,7 @@ import {
   getAccountValueMany,
   OutputCurrency,
 } from "@banool/aptos-account-value";
-import {
-  Aptos,
-  AptosConfig,
-  Network,
-} from "@aptos-labs/ts-sdk";
+import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 interface GetAccountValueManyBody {
   network: Network;
