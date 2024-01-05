@@ -18,12 +18,15 @@ export async function fetchAriesDeposits({
   const params = {
     owner: accountAddress,
   };
-  let response;
-  try {
-    response = await fetch(`${url}?input=${encodeURIComponent(JSON.stringify(params))}`);
-  } catch (e) {
-    // This account must not have an account with Aries.
+  const response = await fetch(`${url}?input=${encodeURIComponent(JSON.stringify(params))}`);
+
+  if (response.status === 404) {
+    // The account must not be registered with Aries.
     return [];
+  }
+
+  if (!response.ok) {
+    throw new Error(`Failed to read Aries data for ${accountAddress}: ${response.status} ${response.statusText}`);
   }
 
   const json = await response.json();
