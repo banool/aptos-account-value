@@ -84,7 +84,9 @@ export const AppraisalModal: React.FC<AppraisalModalProps> = ({
                 <Thead>
                   <Tr>
                     <Th>Asset Name</Th>
-                    <Th isNumeric>Amount</Th>
+                    <Tooltip label="The amount of the asset that is owned by the account. This does not take decimals into account.">
+                      <Th isNumeric>Amount</Th>
+                    </Tooltip>
                   </Tr>
                 </Thead>
                 <Tbody>
