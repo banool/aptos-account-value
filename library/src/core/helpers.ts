@@ -1,4 +1,5 @@
 import { AccountAddress, HexInput } from "@aptos-labs/ts-sdk";
+import { Asset } from "./types";
 
 export async function sequentialMap<T, K>(arr: T[], fn: (item: T) => Promise<K>): Promise<K[]> {
   const result: K[] = [];
@@ -27,4 +28,20 @@ export function checkAccountAddress(accountAddress: HexInput) {
   if (!result.valid) {
     throw new Error(`Invalid account address: ${result.invalidReasonMessage}`);
   }
+}
+
+/**
+ * Deduplicate assets by combining assets with the same typeString.
+ */
+export function deduplicateAssets(assets: Asset[]) {
+  const assetMap = new Map<string, Asset>();
+  for (const asset of assets) {
+    const existing = assetMap.get(asset.typeString);
+    if (existing) {
+      existing.amount += asset.amount;
+    } else {
+      assetMap.set(asset.typeString, asset);
+    }
+  }
+  return Array.from(assetMap.values());
 }

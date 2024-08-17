@@ -2,6 +2,7 @@ import { AccountAddress, AccountAddressInput, Aptos } from "@aptos-labs/ts-sdk";
 import { Asset, OutputCurrency, attachDecimalInformation } from "./core";
 import { fetchAriesDeposits, fetchCoins, fetchStake } from "./fetchers";
 import { AppraiseResult, appraise, getPrices } from "./appraisers";
+import { fetchCellanaDeposits } from "./fetchers/cellana";
 
 export { AppraiseResult } from "./appraisers";
 export { Asset, OutputCurrency } from "./core";
@@ -33,6 +34,7 @@ export async function getAccountValueMany({
       assets.push(...(await fetchCoins({ client, accountAddress })));
       assets.push(...(await fetchStake({ client, accountAddress })));
       assets.push(...(await fetchAriesDeposits({ accountAddress })));
+      assets.push(...(await fetchCellanaDeposits({ client, accountAddress })));
       return [accountAddress, assets] as const;
     }),
   );

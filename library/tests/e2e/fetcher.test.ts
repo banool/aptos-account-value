@@ -1,5 +1,6 @@
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import { fetchCoins, fetchStake } from "../../src/fetchers";
+import { fetchCellanaDeposits } from "../../src/fetchers/cellana";
 
 /* eslint no-console: 0 */
 describe("Fetchers", () => {
@@ -9,11 +10,19 @@ describe("Fetchers", () => {
 
   test("Coin fetcher works", async () => {
     const coins = await fetchCoins({ client, accountAddress });
-    console.log(JSON.stringify(coins, null, 2));
+    console.log("Coins", JSON.stringify(coins, null, 2));
   });
 
   test("Staking fetcher works", async () => {
     const stake = await fetchStake({ client, accountAddress });
-    console.log(JSON.stringify(stake, null, 2));
+    console.log("Stake", JSON.stringify(stake, null, 2));
+  });
+
+  test("Cellana fetcher works", async () => {
+    const assets = await fetchCellanaDeposits({
+      client,
+      accountAddress: "0x232098630cfad4734812fa37dc18d9b8d59242feabe49259e26318d468a99584",
+    });
+    console.log("Cellana", JSON.stringify(assets, null, 2));
   });
 });

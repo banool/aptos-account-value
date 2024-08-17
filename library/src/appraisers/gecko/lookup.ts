@@ -57,6 +57,11 @@ const data: Lookup[] = [
     address: "0x111ae3e5bc816a5e63c2da97d0aa3886519e0cd5e4b046659fa35796bd11542a::amapt_token::AmnisApt",
     geckoId: "amnis-aptos",
   },
+  // Cellana. Fungible Asset, for now I just store the address of the FA metadata.
+  {
+    address: "0x2ebb2ccac5e027a87fa0e2e5f656a3a4238d6a48d93ec9b610d570fc0aa0df12",
+    geckoId: "cellana-finance",
+  },
 ];
 
 // Throw an error if there are any duplicate addresses. Multiple addresses mapping to
