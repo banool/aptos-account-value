@@ -39,7 +39,7 @@
     "generate-from-indexer-queries": "graphql-codegen --config ./src/codegen/indexer/codegen.ts"
   },
   "dependencies": {
-    "@aptos-labs/ts-sdk": "^0.0.7",
+    "@aptos-labs/ts-sdk": "^1.27.0",
     "graphql-request": "=5.1.0"
   },
   "devDependencies": {

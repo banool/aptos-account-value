@@ -40,18 +40,15 @@ export const AppInner = () => {
 
   // First try to add IdentityConnectWallet. This only works if we're on a production
   // network, it doesn't work for local development.
-  const networkName = getNetworkName(state.network);
-  if (networkName) {
-    const identityConnectWalletConfig: IdentityConnectWalletConfig = {
-      networkName: networkName,
-    };
-    wallets.push(
-      new IdentityConnectWallet(
-        identityConnectDappId,
-        identityConnectWalletConfig,
-      ),
-    );
-  }
+  const identityConnectWalletConfig: IdentityConnectWalletConfig = {
+    networkName: state.network,
+  };
+  wallets.push(
+    new IdentityConnectWallet(
+      identityConnectDappId,
+      identityConnectWalletConfig,
+    ),
+  );
 
   // Add the rest of the wallets. This order is intentional.
   wallets = wallets.concat([
