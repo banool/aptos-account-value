@@ -1,0 +1,14 @@
+{
+  "name": "aptos-account-value",
+  "private": true,
+  "packageManager": "pnpm@9.7.1",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "fmt": "prettier --write \"**/*.{ts,tsx,json}\""
+  },
+  "devDependencies": {
+    "prettier": "catalog:"
+  }
+}

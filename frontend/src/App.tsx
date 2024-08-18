@@ -13,8 +13,6 @@ import {
   IdentityConnectWallet,
   IdentityConnectWalletConfig,
 } from "@identity-connect/wallet-adapter-plugin";
-import { FewchaWallet } from "fewcha-plugin-wallet-adapter";
-import { MartianWallet } from "@martianwallet/aptos-wallet-adapter";
 import { PontemWallet } from "@pontem/wallet-adapter-plugin";
 import { Network } from "@aptos-labs/ts-sdk";
 
@@ -51,12 +49,7 @@ export const AppInner = () => {
   );
 
   // Add the rest of the wallets. This order is intentional.
-  wallets = wallets.concat([
-    new PetraWallet(),
-    new PontemWallet(),
-    new MartianWallet(),
-    new FewchaWallet(),
-  ]);
+  wallets = wallets.concat([new PetraWallet(), new PontemWallet()]);
 
   return (
     // This key is necessary to make the wallets used by the WalletSelector refresh

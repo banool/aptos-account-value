@@ -21,3 +21,6 @@ If it's something more complicated than that you might need to add a new fetcher
 ## Anything else I should know?
 - We just support coins / fungible assets and staking right now.
 - As usual I don't log anything, include any telemetry, etc. in any of this code.
+
+## How do I contrinbute?
+See [CONTRIBUTING.md](CONTRIBUTING.md).
