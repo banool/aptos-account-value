@@ -1,6 +1,5 @@
 {
   "name": "aptos-account-value-frontend",
-  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@aptos-labs/ts-sdk": "catalog:",

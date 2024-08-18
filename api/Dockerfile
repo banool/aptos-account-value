@@ -1,3 +1,7 @@
+# All source paths here are relative to the root of the repo. Build locally by running
+# this from the root of the repo:
+# docker build -f api/Dockerfile -t aptos-account-value-api .
+
 FROM node:20-slim AS base
 
 ENV PNPM_HOME="/pnpm"
@@ -6,28 +10,27 @@ RUN corepack enable
 
 FROM base AS builder
 
-WORKDIR /build
-
-COPY . .
-
-RUN pnpm install --frozen-lockfile
-RUN pnpm compile
-
-RUN ls -a dist
-
-FROM base AS runner
-
 RUN apt update && apt install -y tini
 
 WORKDIR /app
 
-COPY --from=builder /build/dist /app
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY library library
+COPY api api
 
-ENV NODE_ENV production
-
-# This will install only the prod deps.
-COPY package.json pnpm-lock.yaml ./
+# Install dependencies.
 RUN pnpm install --frozen-lockfile
+RUN cd library && pnpm install --frozen-lockfile
+RUN cd api && pnpm install --frozen-lockfile
+
+# Build the library.
+RUN cd library && pnpm build
+
+# Build the API.
+RUN cd api && pnpm compile
+
+# Prune the devDependencies.
+RUN pnpm prune --prod
 
 EXPOSE 3002
-CMD [ "/bin/tini", "--", "node", "/app/src/server.js" ]
+CMD [ "/bin/tini", "--", "node", "/app/api/dist/src/server.js" ]
