@@ -1,4 +1,12 @@
-import { Aptos, AccountAddress, InputViewRequestData, AccountAddressInput } from "@aptos-labs/ts-sdk";
+import {
+  Aptos,
+  AccountAddress,
+  AccountAddressInput,
+  InputViewFunctionData,
+  TypeTagAddress,
+  TypeTagBool,
+  TypeTagU64,
+} from "@aptos-labs/ts-sdk";
 import { GetDelegatedStakingQuery, GetDelegatedStakingRoyaltiesQuery } from "../codegen/indexer/generated/operations";
 import { GetDelegatedStaking, GetDelegatedStakingRoyalties } from "../codegen/indexer/generated/queries";
 import { ensureMillisecondTimestamp, sequentialMap, sum } from "../core/helpers";
@@ -39,7 +47,7 @@ async function getAllStake(client: Aptos, delegatorAddress: AccountAddress) {
     if (!pool.pool_address) {
       throw Error("pool_address is undefined");
     }
-    const validatorAddress = AccountAddress.fromStringRelaxed(pool.pool_address);
+    const validatorAddress = AccountAddress.from(pool.pool_address);
 
     const [stake, stakePool, principals] = await Promise.all([
       getStake(client, delegatorAddress, validatorAddress),
@@ -180,12 +188,17 @@ export interface UseStakingReturnType {
  * for the edge case when the validator had gone inactive before its lockup expired.
  */
 async function getCanWithdrawPendingInactive(client: Aptos, validatorAddress: AccountAddress): Promise<boolean> {
-  const payload: InputViewRequestData = {
+  const payload: InputViewFunctionData = {
     function: "0x1::delegation_pool::can_withdraw_pending_inactive",
     functionArguments: [validatorAddress.toStringLong()],
+    abi: {
+      typeParameters: [],
+      parameters: [new TypeTagAddress()],
+      returnTypes: [new TypeTagBool()],
+    },
   };
-  const res = await client.view({ payload });
-  return Boolean(res[0]);
+  const [result] = await client.view<[boolean]>({ payload });
+  return result;
 }
 
 /**
@@ -197,16 +210,21 @@ async function getStake(
   delegatorAddress: AccountAddress,
   validatorAddress: AccountAddress,
 ): Promise<StakeTotals> {
-  const payload: InputViewRequestData = {
+  const payload: InputViewFunctionData = {
     function: "0x1::delegation_pool::get_stake",
     functionArguments: [validatorAddress.toStringLong(), delegatorAddress.toStringLong()],
+    abi: {
+      typeParameters: [],
+      parameters: [new TypeTagAddress(), new TypeTagAddress()],
+      returnTypes: [new TypeTagU64(), new TypeTagU64(), new TypeTagU64()],
+    },
   };
 
-  const result = await client.view({ payload });
+  const result = await client.view<[string, string, string]>({ payload });
   const stakes: StakeTotals = {
-    active: Number(result[0]),
-    withdrawPending: Number(result[2]),
-    withdrawReady: Number(result[1]),
+    active: parseInt(result[0], 10),
+    withdrawReady: parseInt(result[1], 10),
+    withdrawPending: parseInt(result[2], 10),
   };
 
   const canWithdrawPendingInactive = await getCanWithdrawPendingInactive(client, validatorAddress);

@@ -50,6 +50,6 @@ async function lookUpDecimals({
   client: Aptos;
   assetTypeString: string;
 }): Promise<number> {
-  const assetType = await client.getFungibleAssetMetadataByAssetType(assetTypeString);
+  const assetType = await client.getFungibleAssetMetadataByAssetType({ assetType: assetTypeString });
   return assetType.decimals;
 }

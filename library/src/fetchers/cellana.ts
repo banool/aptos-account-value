@@ -70,14 +70,14 @@ export async function fetchCellanaDeposits({
 
       assets.push({
         typeString: pool.token0.address,
-        amount: parseInt(liquidityAmounts[0] as string),
+        amount: parseInt(liquidityAmounts[0] as string, 10),
         decimals: pool.token0.decimals,
         prettyName: `${pool.token0.name} (Cellana)`,
       });
 
       assets.push({
         typeString: pool.token1.address,
-        amount: parseInt(liquidityAmounts[1] as string),
+        amount: parseInt(liquidityAmounts[1] as string, 10),
         decimals: pool.token1.decimals,
         prettyName: `${pool.token1.name} (Cellana)`,
       });
