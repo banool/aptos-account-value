@@ -14,6 +14,11 @@ export type Asset = {
   amount: number;
 };
 
+export type AppraisedAsset = Asset & {
+  /** The value of the asset in the requested currency. */
+  value: number;
+};
+
 export const APT_DECIMALS = 8;
 
 // In some functions we don't read the coin metadata. These constants are for common
