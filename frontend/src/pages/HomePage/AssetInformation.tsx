@@ -19,7 +19,6 @@ import {
   Box,
   Tooltip,
   HStack,
-  useClipboard,
   useToast,
   forwardRef,
 } from "@chakra-ui/react";
@@ -28,13 +27,16 @@ type AppraisalModalProps = {
   isOpen: boolean;
   onClose: () => void;
   result: AppraiseResult;
+  outputCurrency: OutputCurrency;
 };
 
 export const AppraisalModal: React.FC<AppraisalModalProps> = ({
   isOpen,
   onClose,
   result,
+  outputCurrency,
 }) => {
+  // TODO: Make modal wider.
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
       <ModalOverlay />
@@ -55,6 +57,7 @@ export const AppraisalModal: React.FC<AppraisalModalProps> = ({
                 <Tooltip label="The amount of the asset that is owned by the account. This takes decimals into account, e.g. shows APT as APT, not OCTAs.">
                   <Th isNumeric>Amount</Th>
                 </Tooltip>
+                <Th isNumeric>{`Value (${outputCurrency})`}</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -70,6 +73,9 @@ export const AppraisalModal: React.FC<AppraisalModalProps> = ({
                   </Tooltip>
                   <Td isNumeric>
                     {(asset.amount / 10 ** (asset.decimals ?? 1)).toFixed(2)}
+                  </Td>
+                  <Td isNumeric>
+                    {asset.value.toLocaleString()}
                   </Td>
                 </Tr>
               ))}

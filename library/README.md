@@ -14,7 +14,7 @@ pnpm install @banool/aptos-account-value
 
 Install TS SDK v2:
 ```bash
-pnpm install @aptos-labs/ts-sdk@0.0.7
+pnpm install @aptos-labs/ts-sdk@1.27.0
 ```
 
 ## Usage

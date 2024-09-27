@@ -10,5 +10,5 @@ describe("Top", () => {
   test("getAccountValue works", async () => {
     const result = await getAccountValueMany({ client, accountAddresses: [accountAddress] });
     console.log("Top level result", JSON.stringify(Object.fromEntries(result.entries()), null, 2));
-  });
+  }, 30000);
 });

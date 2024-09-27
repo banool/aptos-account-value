@@ -80,7 +80,7 @@ export const RowInfo = ({
       <Td>{result.knownAssets.length}</Td>
       <Td>{result.unknownAssets.length}</Td>
       <Td>
-        <AppraisalButton result={result} />
+        <AppraisalButton result={result} outputCurrency={outputCurrency} />
       </Td>
     </>
   );
@@ -119,13 +119,13 @@ const InvalidPopover = ({ reason }: { reason: string }) => {
   );
 };
 
-const AppraisalButton = ({ result }: { result: AppraiseResult }) => {
+const AppraisalButton = ({ result, outputCurrency }: { result: AppraiseResult, outputCurrency: OutputCurrency }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Button onClick={onOpen}>🧐</Button>
-      <AppraisalModal isOpen={isOpen} onClose={onClose} result={result} />
+      <AppraisalModal isOpen={isOpen} onClose={onClose} result={result} outputCurrency={outputCurrency} />
     </>
   );
 };
