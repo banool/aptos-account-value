@@ -22,6 +22,7 @@ import {
   useToast,
   forwardRef,
 } from "@chakra-ui/react";
+import { formatAmount } from "../../utils";
 
 type AppraisalModalProps = {
   isOpen: boolean;
@@ -40,7 +41,7 @@ export const AppraisalModal: React.FC<AppraisalModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent minW="1000px">
         <ModalHeader>Appraisal</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -55,7 +56,7 @@ export const AppraisalModal: React.FC<AppraisalModalProps> = ({
               <Tr>
                 <Th>Asset Name</Th>
                 <Tooltip label="The amount of the asset that is owned by the account. This takes decimals into account, e.g. shows APT as APT, not OCTAs.">
-                  <Th isNumeric>Amount</Th>
+                  <Th isNumeric>Amount ⓘ</Th>
                 </Tooltip>
                 <Th isNumeric>{`Value (${outputCurrency})`}</Th>
               </Tr>
@@ -72,10 +73,13 @@ export const AppraisalModal: React.FC<AppraisalModalProps> = ({
                     </span>
                   </Tooltip>
                   <Td isNumeric>
-                    {(asset.amount / 10 ** (asset.decimals ?? 1)).toFixed(2)}
+                    {(asset.amount / 10 ** (asset.decimals ?? 1)).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    })}
                   </Td>
                   <Td isNumeric>
-                    {asset.value.toLocaleString()}
+                    {formatAmount(asset.value, outputCurrency)}
                   </Td>
                 </Tr>
               ))}

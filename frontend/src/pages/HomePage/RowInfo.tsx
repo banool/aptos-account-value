@@ -139,5 +139,8 @@ export function formatAmount(amount: number, currency: OutputCurrency): string {
   if (currency === OutputCurrency.APT) {
     suffix = OutputCurrency.APT;
   }
-  return `${prefix}${amount.toFixed(2)} ${suffix}`;
+  return `${prefix}${amount.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })} ${suffix}`;
 }

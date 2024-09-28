@@ -1,3 +1,5 @@
+import { OutputCurrency } from "@banool/aptos-account-value";
+
 /**
  * Helper function for exhaustiveness checks.
  *
@@ -179,4 +181,19 @@ export function validateAptString(s: string): number | null {
 
 export function sum<T>(arr: T[], fn: (item: T) => number): number {
   return arr.reduce((acc, item) => acc + fn(item), 0);
+}
+
+export function formatAmount(amount: number, currency: OutputCurrency): string {
+  let prefix = "";
+  let suffix = "";
+  if (currency === OutputCurrency.USD) {
+    prefix = "$";
+  }
+  if (currency === OutputCurrency.APT) {
+    suffix = OutputCurrency.APT;
+  }
+  return `${prefix}${amount.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })} ${suffix}`;
 }
