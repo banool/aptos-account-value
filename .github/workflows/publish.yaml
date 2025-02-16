@@ -33,7 +33,8 @@ jobs:
     - run: cd frontend && CI= pnpm build
 
     # Upload the artifact.
-    - uses: actions/upload-pages-artifact@v1
+    - uses: actions/upload-pages-artifact@v3
+      id: upload-web
       with:
         path: frontend/build
 
@@ -49,9 +50,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - uses: actions/configure-pages@v1
+    - uses: actions/configure-pages@v5
     - id: deployment
-      uses: actions/deploy-pages@v1
+      uses: actions/deploy-pages@v4
 
   # Build and push Docker image for the API server.
   build_api:
