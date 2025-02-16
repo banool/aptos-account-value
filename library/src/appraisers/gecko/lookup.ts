@@ -25,7 +25,7 @@ const data: Lookup[] = [
     address: "0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDT",
     geckoId: "tether",
   },
-  // Worhome USDT
+  // Wormhole USDT
   {
     address: "0xa2eda21a58856fda86451436513b867c97eecb4ba099da5775520e0f7492e852::coin::T",
     geckoId: "tether",
@@ -61,6 +61,16 @@ const data: Lookup[] = [
   {
     address: "0x2ebb2ccac5e027a87fa0e2e5f656a3a4238d6a48d93ec9b610d570fc0aa0df12",
     geckoId: "cellana-finance",
+  },
+  // Aries native USDT
+  {
+    address: "0x9770fa9c725cbd97eb50b2be5f7416efdfd1f1554beb0750d4dae4c64e860da3::fa_to_coin_wrapper::WrappedUSDT",
+    geckoId: "usd-coin",
+  },
+  // Aries native USDC
+  {
+    address: "0x9770fa9c725cbd97eb50b2be5f7416efdfd1f1554beb0750d4dae4c64e860da3::wrapped_coins::WrappedUSDC",
+    geckoId: "usd-coin",
   },
 ];
 
