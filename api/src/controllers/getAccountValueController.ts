@@ -18,7 +18,7 @@ export class AccountController extends Controller {
   public async getAccountValueMany(
     @Body() body: GetAccountValueManyBody,
   ): Promise<Record<string, AppraiseResult>> {
-    const config = new AptosConfig({ network: body.network });
+    const config = new AptosConfig({ network: body.network, clientConfig: { API_KEY: process.env.API_KEY } });
     const client = new Aptos(config);
     return Object.fromEntries(
       (

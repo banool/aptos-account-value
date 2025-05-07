@@ -15,7 +15,7 @@ type GlobalActions = {
 };
 
 function deriveGlobalState({ network }: { network: Network }): GlobalState {
-  const config = new AptosConfig({ network });
+  const config = new AptosConfig({ network, clientConfig: { API_KEY: process.env.API_KEY } });
   const client = new Aptos(config);
   return {
     network,
