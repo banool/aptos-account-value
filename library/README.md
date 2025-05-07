@@ -14,7 +14,7 @@ pnpm install @banool/aptos-account-value
 
 Install TS SDK v2:
 ```bash
-pnpm install @aptos-labs/ts-sdk@1.27.0
+pnpm install @aptos-labs/ts-sdk
 ```
 
 ## Usage
@@ -24,7 +24,7 @@ Create a client:
 ```ts
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
-const config = new AptosConfig({ network: Network.MAINNET });
+const config = new AptosConfig({ network: Network.MAINNET, clientConfig: { API_KEY: process.env.API_KEY } });
 const client = new Aptos(config);
 ```
 

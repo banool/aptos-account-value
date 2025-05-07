@@ -23,4 +23,4 @@ jobs:
 
     # Run the tests. For now we run the e2e tests even though they could be flaky
     # because they rely on remote APIs.
-    - run: cd library && pnpm e2e-test
+    - run: cd library && API_KEY=${{ secrets.API_KEY }} pnpm e2e-test
